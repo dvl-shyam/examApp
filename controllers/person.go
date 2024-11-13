@@ -126,21 +126,30 @@ func GetAge(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePerson(w http.ResponseWriter, r *http.Request) {
-    id := r.URL.Query().Get("id")
-    objID, err := primitive.ObjectIDFromHex(id)
-    if err != nil {
-        http.Error(w, "Invalid ID format", http.StatusBadRequest)
-        return
-    }
+	id := r.URL.Query().Get("id")
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+			http.Error(w, "Invalid ID format", http.StatusBadRequest)
+			return
+	}
 
-    var updatedPerson models.Person
-    _ = json.NewDecoder(r.Body).Decode(&updatedPerson)
+	var updatedPerson models.Person
+	if err := json.NewDecoder(r.Body).Decode(&updatedPerson); err != nil {
+			http.Error(w, "Failed to decode request body", http.StatusBadRequest)
+			return
+	}
 
-    collection := getCollection()
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
+	updatedPerson.Gender = strings.ToLower(updatedPerson.Gender)
+	if updatedPerson.Gender != "male" && updatedPerson.Gender != "female" {
+			http.Error(w, "Invalid gender", http.StatusBadRequest)
+			return
+	}
 
-		updateDetails := bson.M{
+	collection := getCollection()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	update := bson.M{
 			"$set": bson.M{
 					"firstName":        updatedPerson.FirstName,
 					"middleName":       updatedPerson.MiddleName,
@@ -164,19 +173,23 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 			},
 	}
 
-	result, err := collection.UpdateOne(ctx, bson.M{"_id": objID}, updateDetails)
+	result, err := collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
 	if err != nil {
 			http.Error(w, "Error updating document", http.StatusInternalServerError)
 			return
 	}
 
 	if result.MatchedCount == 0 {
-			http.Error(w, "No matching document found", http.StatusNotFound)
+			http.Error(w, "No Person found", http.StatusNotFound)
 			return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(updatedPerson)
+	response := map[string]interface{}{
+			"message": "Person updated successfully",
+			"person":  updatedPerson,
+	}
+	json.NewEncoder(w).Encode(response)
 }
 
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
