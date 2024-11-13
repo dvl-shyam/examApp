@@ -20,11 +20,11 @@ func main() {
         fmt.Fprintln(w, "Exam Application Project")
     })
 
-    http.HandleFunc("/person/create", controllers.CreatePerson)
-    http.HandleFunc("/person/getone", controllers.GetPerson)
-    http.HandleFunc("/person/update", controllers.UpdatePerson)
-    http.HandleFunc("/person/delete", controllers.DeletePerson)
-    http.HandleFunc("/person/getage", controllers.GetAge)
+    http.HandleFunc("POST /person/create", controllers.CreatePerson)
+    http.HandleFunc("GET /person/getone", controllers.GetPerson)
+    http.HandleFunc("PUT /person/update", controllers.UpdatePerson)
+    http.HandleFunc("DELETE /person/delete", controllers.DeletePerson)
+    http.HandleFunc("GET /person/getage", controllers.GetAge)
 
     port := "8000"
     fmt.Printf("Server started on port %s\n", port)

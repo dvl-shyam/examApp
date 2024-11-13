@@ -21,8 +21,13 @@ func getCollection() *mongo.Collection {
 }
 
 func CreatePerson(w http.ResponseWriter, r *http.Request) {
+	
 	var person models.Person
-	_ = json.NewDecoder(r.Body).Decode(&person)
+	err := json.NewDecoder(r.Body).Decode(&person)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+}
 
 	collection := getCollection()
 	
