@@ -1,15 +1,14 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
-    "examapp/config"
-    "examapp/controllers"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
-    client, err := config.ConnectDB()
+    client, err := ConnectDB()
     if err != nil {
         log.Fatalf("Could not connect to MongoDB: %v", err)
     }
@@ -20,13 +19,13 @@ func main() {
         fmt.Fprintln(w, "Exam Application Project")
     })
 
-    http.HandleFunc("POST /person/create", controllers.CreatePerson)
-    http.HandleFunc("GET /person/getone", controllers.GetPerson)
-    http.HandleFunc("PUT /person/update", controllers.UpdatePerson)
-    http.HandleFunc("DELETE /person/delete", controllers.DeletePerson)
-    http.HandleFunc("GET /person/getage", controllers.GetAge)
+    http.HandleFunc("POST /person/create", CreatePerson)
+    http.HandleFunc("GET /person/getone/", GetPerson)
+    http.HandleFunc("PUT /person/update/", UpdatePerson)
+    http.HandleFunc("DELETE /person/delete/", DeletePerson)
+    http.HandleFunc("GET /person/getage/", GetAge)
 
-    port := "8000"
+    port := os.Getenv("PORT")
     fmt.Printf("Server started on port %s\n", port)
     if err := http.ListenAndServe(":"+port, nil); err != nil {
         log.Fatalf("Server failed: %v", err)

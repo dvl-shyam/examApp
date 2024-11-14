@@ -7,6 +7,12 @@ curl 'go mod tidy'
 Install Mongodb Drivers
 curl 'go get go.mongodb.org/mongo-driver/mongo'
 curl 'go get go.mongodb.org/mongo-driver/mongo/options'
+
+Basic Commands
+curl export MONGO_URI="mongodb://localhost:27017"
+export MONGO_USER="your-access-key"
+export MONGO_PASS="your-secret-key"
+export PORT="8000"
 ```
 
 ```bash

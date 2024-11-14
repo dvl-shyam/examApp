@@ -1,11 +1,13 @@
-package config
+package main
 
 import (
 	"context"
 	"fmt"
+	"os"
+	"time"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"time"
 )
 
 var client *mongo.Client
@@ -13,7 +15,11 @@ var client *mongo.Client
 func ConnectDB() (*mongo.Client, error) {
 	var err error
 	if client == nil {
-		uri := "mongodb://localhost:27017"
+		uri := os.Getenv("MONGO_URI")
+		if uri == "" {
+			return nil, fmt.Errorf("missing required MongoDB environment variables")
+	}
+		// uri := "mongodb://localhost:27017"
 
 		clientOptions := options.Client().ApplyURI(uri)
 
