@@ -63,12 +63,6 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 	id := parts[3]
 	fmt.Println(id)
 
-	// id := r.URL.Query().Get("id")
-	// if id == "" {
-	// 	http.Error(w, "Missing id parameter", http.StatusBadRequest)
-	// 	return
-	// }
-
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		http.Error(w, "Invalid ID format", http.StatusBadRequest)
@@ -109,7 +103,6 @@ func calculateAge(dob time.Time) int {
 }
 
 func GetAge(w http.ResponseWriter, r *http.Request) {
-	// id := r.URL.Query().Get("id")
 	parts := strings.Split(r.URL.Path, "/")
 	if len(parts) < 4 || parts[3] == "" {
 		http.Error(w, "Missing ID in URL path", http.StatusBadRequest)
@@ -149,14 +142,12 @@ func GetAge(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdatePerson(w http.ResponseWriter, r *http.Request) {
-	// id := r.URL.Query().Get("id")
 	parts := strings.Split(r.URL.Path, "/")
 	if len(parts) < 4 || parts[3] == "" {
 		http.Error(w, "Missing ID in URL path", http.StatusBadRequest)
 		return
 	}
 	id := parts[3]
-	fmt.Println(id)
 
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -224,13 +215,6 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeletePerson(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("DeletePerson API hit")
-
-	// id := r.URL.Query().Get("id")
-	// if id == "" {
-	// 	http.Error(w, "Missing id parameter", http.StatusBadRequest)
-	// 	return
-	// }
 	parts := strings.Split(r.URL.Path, "/")
 	if len(parts) < 4 || parts[3] == "" {
 		http.Error(w, "Missing ID in URL path", http.StatusBadRequest)
