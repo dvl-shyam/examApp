@@ -1,27 +1,32 @@
+
+# Install dependencies
 ```bash
-Install dependencies
 'go mod tidy'
 ```
 
-```bash
+
 Install Mongodb Drivers
+```bash
 'go get go.mongodb.org/mongo-driver/mongo'
 'go get go.mongodb.org/mongo-driver/mongo/options'
+```
 
-Environment Variables
-export MONGO_URI="mongodb://localhost:27017"
+ # Set Environment Variables
+ ```bash
+export MONGO_URI="mongodb://localhost:{PORT}"
 export MONGO_USER="your-access-key"
 export MONGO_PASS="your-secret-key"
-export PORT="8000"
+export PORT="{PORT}"
 ```
 
-```bash
-----------------APIS-----------------
-```
-```bash
+
+ --------------APIS-----------------
+
+
 
 Create Person
-curl --location 'http://localhost:8000/person/create' \
+```bash
+curl --location 'http://localhost:{PORT}/person/create' \
 --header 'Content-Type: application/json' \
 --data '{
     "firstName": "Shyam",
@@ -47,14 +52,16 @@ curl --location 'http://localhost:8000/person/create' \
 '
 ```
 
-```bash
+
 GET Person
-curl --location --request GET 'http://localhost:8000/person/getone/673430c6d7d801e65a3a54cb'
+```bash
+curl --location --request GET 'http://localhost:{PORT}/person/getone/673430c6d7d801e65a3a54cb'
 ```
 
-```bash
+
 Update Person
-curl --location --request PUT 'http://localhost:8000/person/update?id=673430c6d7d801e65a3a54cb' \
+```bash
+curl --location --request PUT 'http://localhost:{PORT}/person/update?id=673430c6d7d801e65a3a54cb' \
 --header 'Content-Type: application/json' \
 --data '{
     "firstName": "Ram",
@@ -79,12 +86,12 @@ curl --location --request PUT 'http://localhost:8000/person/update?id=673430c6d7
 }'
 ```
 
-```bash
 Get Age
-curl --location --request GET 'http://localhost:8000/person/getage?id=673430c6d7d801e65a3a54cb'
+```bash
+curl --location --request GET 'http://localhost:{PORT}/person/getage?id=673430c6d7d801e65a3a54cb'
 ```
 
-```bash
 Delete Person
-curl --location --request DELETE 'http://localhost:8000/person/delete?id=673430c6d7d801e65a3a54cb'
+```bash
+curl --location --request DELETE 'http://localhost:{PORT}/person/delete?id=673430c6d7d801e65a3a54cb'
 ```
