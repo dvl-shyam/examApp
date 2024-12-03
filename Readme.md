@@ -1,7 +1,7 @@
 
 # Install dependencies
 ```bash
-'go mod tidy'
+go mod tidy
 ```
 
 
